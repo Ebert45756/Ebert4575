@@ -8,7 +8,7 @@ organização, edição, publicação e visualização de avisos.
 O projeto foi desenvolvido como parte das atividades acadêmicas, utilizando
 uma metodologia de organização baseada em Kanban através do Trello.
 
-## 🎯 Objetivo
+## 🎯 Objetivoo
 
 O objetivo principal do sistema é permitir que avisos sejam cadastrados,
 editados, publicados e visualizados de maneira organizada e simples.
