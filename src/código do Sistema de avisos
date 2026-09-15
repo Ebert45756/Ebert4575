@@ -1,0 +1,270 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class SistemaAvisos {
+
+    static Scanner scanner = new Scanner(System.in);
+    static ArrayList<Aviso> avisos = new ArrayList<>();
+
+    public static void main(String[] args) {
+
+        int opcao;
+
+        do {
+            System.out.println("\n=================================");
+            System.out.println("       SISTEMA DE AVISOS");
+            System.out.println("=================================");
+            System.out.println("1 - Cadastrar aviso");
+            System.out.println("2 - Pesquisar aviso");
+            System.out.println("3 - Visualizar avisos");
+            System.out.println("4 - Editar aviso");
+            System.out.println("5 - Publicar aviso");
+            System.out.println("6 - Visualizar arquivos");
+            System.out.println("0 - Sair");
+            System.out.print("Escolha uma opção: ");
+
+            opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    cadastrarAviso();
+                    break;
+
+                case 2:
+                    pesquisarAviso();
+                    break;
+
+                case 3:
+                    visualizarAvisos();
+                    break;
+
+                case 4:
+                    editarAviso();
+                    break;
+
+                case 5:
+                    publicarAviso();
+                    break;
+
+                case 6:
+                    visualizarArquivos();
+                    break;
+
+                case 0:
+                    System.out.println("Sistema encerrado.");
+                    break;
+
+                default:
+                    System.out.println("Opção inválida!");
+            }
+
+        } while (opcao != 0);
+
+        scanner.close();
+    }
+
+    // CADASTRAR AVISO
+    public static void cadastrarAviso() {
+
+        System.out.println("\n--- CADASTRO DE AVISO ---");
+
+        System.out.print("Título: ");
+        String titulo = scanner.nextLine();
+
+        System.out.print("Descrição: ");
+        String descricao = scanner.nextLine();
+
+        System.out.print("Público-alvo: ");
+        String publico = scanner.nextLine();
+
+        System.out.print("Data do aviso: ");
+        String data = scanner.nextLine();
+
+        Aviso aviso = new Aviso(titulo, descricao, publico, data);
+
+        avisos.add(aviso);
+
+        System.out.println("\nAviso cadastrado com sucesso!");
+    }
+
+    // PESQUISAR AVISO
+    public static void pesquisarAviso() {
+
+        System.out.println("\n--- PESQUISAR AVISO ---");
+
+        if (avisos.isEmpty()) {
+            System.out.println("Não existem avisos cadastrados.");
+            return;
+        }
+
+        System.out.print("Digite o título ou parte do título: ");
+        String pesquisa = scanner.nextLine().toLowerCase();
+
+        boolean encontrado = false;
+
+        for (Aviso aviso : avisos) {
+
+            if (aviso.titulo.toLowerCase().contains(pesquisa)) {
+
+                mostrarAviso(aviso);
+                encontrado = true;
+            }
+        }
+
+        if (!encontrado) {
+            System.out.println("Nenhum aviso encontrado.");
+        }
+    }
+
+    // VISUALIZAR AVISOS
+    public static void visualizarAvisos() {
+
+        System.out.println("\n--- AVISOS CADASTRADOS ---");
+
+        if (avisos.isEmpty()) {
+            System.out.println("Não existem avisos cadastrados.");
+            return;
+        }
+
+        for (int i = 0; i < avisos.size(); i++) {
+
+            System.out.println("\nAviso " + (i + 1));
+            mostrarAviso(avisos.get(i));
+        }
+    }
+
+    // EDITAR AVISO
+    public static void editarAviso() {
+
+        System.out.println("\n--- EDITAR AVISO ---");
+
+        if (avisos.isEmpty()) {
+            System.out.println("Não existem avisos cadastrados.");
+            return;
+        }
+
+        visualizarAvisos();
+
+        System.out.print("\nDigite o número do aviso que deseja editar: ");
+        int numero = scanner.nextInt();
+        scanner.nextLine();
+
+        if (numero < 1 || numero > avisos.size()) {
+            System.out.println("Aviso inválido!");
+            return;
+        }
+
+        Aviso aviso = avisos.get(numero - 1);
+
+        System.out.print("Novo título: ");
+        aviso.titulo = scanner.nextLine();
+
+        System.out.print("Nova descrição: ");
+        aviso.descricao = scanner.nextLine();
+
+        System.out.print("Novo público-alvo: ");
+        aviso.publicoAlvo = scanner.nextLine();
+
+        System.out.print("Nova data: ");
+        aviso.data = scanner.nextLine();
+
+        System.out.println("\nAviso atualizado com sucesso!");
+    }
+
+    // PUBLICAR AVISO
+    public static void publicarAviso() {
+
+        System.out.println("\n--- PUBLICAR AVISO ---");
+
+        if (avisos.isEmpty()) {
+            System.out.println("Não existem avisos cadastrados.");
+            return;
+        }
+
+        visualizarAvisos();
+
+        System.out.print("\nDigite o número do aviso que deseja publicar: ");
+        int numero = scanner.nextInt();
+        scanner.nextLine();
+
+        if (numero < 1 || numero > avisos.size()) {
+            System.out.println("Aviso inválido!");
+            return;
+        }
+
+        Aviso aviso = avisos.get(numero - 1);
+
+        aviso.publicado = true;
+
+        System.out.println("\nAviso publicado com sucesso!");
+    }
+
+    // VISUALIZAR ARQUIVOS
+    public static void visualizarArquivos() {
+
+        System.out.println("\n--- ARQUIVOS DOS AVISOS ---");
+
+        if (avisos.isEmpty()) {
+            System.out.println("Não existem avisos cadastrados.");
+            return;
+        }
+
+        for (Aviso aviso : avisos) {
+
+            System.out.println("\nAviso: " + aviso.titulo);
+
+            if (aviso.arquivo.equals("")) {
+                System.out.println("Nenhum arquivo anexado.");
+            } else {
+                System.out.println("Arquivo: " + aviso.arquivo);
+            }
+        }
+    }
+
+    // MOSTRAR AVISO
+    public static void mostrarAviso(Aviso aviso) {
+
+        System.out.println("-----------------------------");
+        System.out.println("Título: " + aviso.titulo);
+        System.out.println("Descrição: " + aviso.descricao);
+        System.out.println("Público-alvo: " + aviso.publicoAlvo);
+        System.out.println("Data: " + aviso.data);
+
+        if (aviso.publicado) {
+            System.out.println("Status: PUBLICADO");
+        } else {
+            System.out.println("Status: NÃO PUBLICADO");
+        }
+
+        if (aviso.arquivo.equals("")) {
+            System.out.println("Arquivo: Nenhum");
+        } else {
+            System.out.println("Arquivo: " + aviso.arquivo);
+        }
+
+        System.out.println("-----------------------------");
+    }
+
+    // CLASSE AVISO
+    static class Aviso {
+
+        String titulo;
+        String descricao;
+        String publicoAlvo;
+        String data;
+        String arquivo;
+        boolean publicado;
+
+        public Aviso(String titulo, String descricao,
+                     String publicoAlvo, String data) {
+
+            this.titulo = titulo;
+            this.descricao = descricao;
+            this.publicoAlvo = publicoAlvo;
+            this.data = data;
+            this.arquivo = "";
+            this.publicado = false;
+        }
+    }
+}
